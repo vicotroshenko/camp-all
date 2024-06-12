@@ -1,3 +1,5 @@
+import { AxiosRequestConfig } from 'axios';
+
 export interface ITodos {
 	id?: string;
 	title: string;
@@ -27,4 +29,19 @@ export interface PasswordUser extends Pick<UserType, 'email'> {
 	newPassword: string;
 	passwordToken: string;
 	password?: string;
+}
+
+export interface Headers extends Partial<AxiosRequestConfig> {
+	queryString?: string | undefined;
+	data?: ITodos;
+	id?: string;
+}
+
+export interface MutateParams {
+	id?: string;
+	data: ITodos;
+}
+
+export interface NewUpdateData {
+	[x: string]: string | boolean;
 }

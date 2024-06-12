@@ -19,6 +19,7 @@ const ButtonPrimary: React.FC<ButtonPrimaryProps> = ({
 			type={type}
 			disabled={disabled}
 			onClick={onClick}
+			tabIndex={1}
 			className={btnPrimary}
 		>
 			{children}

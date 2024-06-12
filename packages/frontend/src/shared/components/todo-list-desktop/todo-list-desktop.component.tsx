@@ -1,32 +1,32 @@
 import React from 'react';
-import classNames from 'classnames';
-import { SetURLSearchParams } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
-import CardActions from '../card-actions/card-actions.component';
-import { ITodos } from '~shared/services/types';
+import { ITodos, NewUpdateData } from '~shared/services/types';
+import useAppSearchParams from '~/hooks/useAppSearchParams.hook';
+import TodoItemDesktop from '../todo-item-desktop/todo-item-desktop.component';
 import {
-	border_tb,
+	ld_item,
+	ld_item_animate,
 	paginate_container,
-	todo_tb,
 } from './todo-list-desktop.styles';
 
 interface ITodoListProps {
 	todos: ITodos[];
 	itemsPerPage: number;
-	params: { [x: string]: string };
-	setParams: SetURLSearchParams;
 	amountOfItems: number;
+	onTodoUpdate: (newData: NewUpdateData, todo?: ITodos) => void;
+	onTodoDelete: (id: string) => void;
 }
 
 const TodoListDesktop: React.FC<ITodoListProps> = ({
 	todos,
 	itemsPerPage,
-	params,
-	setParams,
 	amountOfItems,
+	onTodoUpdate,
+	onTodoDelete,
 }) => {
+	const [params, setSearchParams] = useAppSearchParams();
 	const handlePageClick = (event: { selected: number }): void => {
-		setParams({
+		setSearchParams({
 			...params,
 			skip: `${event.selected * itemsPerPage}`,
 		});
@@ -36,28 +36,20 @@ const TodoListDesktop: React.FC<ITodoListProps> = ({
 
 	return (
 		<>
-			<table width="100%" className={classNames([border_tb, todo_tb])}>
-				<thead className={border_tb}>
-					<tr className={border_tb}>
-						<th>todo title</th>
-						<th>description</th>
-						<th>actions</th>
-					</tr>
-				</thead>
-				<tbody className={border_tb}>
-					{todos.map((todo: ITodos) => (
-						<tr key={crypto.randomUUID()} className={border_tb}>
-							<td width="20%">{todo.title}</td>
-							<td width="55%">
-								<span>{todo.description}</span>
-							</td>
-							<td width="25%">
-								<CardActions todo={todo} />
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
+			<ul className={ld_item}>
+				<li>
+					<TodoItemDesktop head={true} />
+				</li>
+				{todos.map((todo) => (
+					<li key={todo.id} className={ld_item_animate}>
+						<TodoItemDesktop
+							todo={todo}
+							onTodoDelete={onTodoDelete}
+							onTodoUpdate={onTodoUpdate}
+						/>
+					</li>
+				))}
+			</ul>
 			<ReactPaginate
 				breakLabel="..."
 				nextLabel="next >"

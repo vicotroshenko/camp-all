@@ -1,24 +1,25 @@
 import React, { useEffect } from 'react';
-import { SetURLSearchParams } from 'react-router-dom';
-import { ITodos } from '~shared/services/types';
+import { ITodos, NewUpdateData } from '~shared/services/types';
+import useAppSearchParams from '~/hooks/useAppSearchParams.hook';
 import TodoCard from '../todo-card/todo-card.component';
 import { td_ls_mobile } from './todo-list-mobile.styles';
 
 interface TodoListMobileProps {
 	todos: ITodos[];
 	itemsPerPage: number;
-	params?: { [x: string]: string };
-	setParams: SetURLSearchParams;
 	amountOfItems: number;
+	onTodoUpdate: (newData: NewUpdateData, todo?: ITodos) => void;
+	onTodoDelete: (id: string) => void;
 }
 
 const TodoListMobile: React.FC<TodoListMobileProps> = ({
 	todos,
-	params,
-	setParams,
 	amountOfItems,
 	itemsPerPage,
+	onTodoUpdate,
+	onTodoDelete,
 }) => {
+	const [params, setSearchParams] = useAppSearchParams();
 	useEffect(() => {
 		const handleScroll = (): void => {
 			const scrollTop = document.documentElement.scrollTop;
@@ -27,11 +28,11 @@ const TodoListMobile: React.FC<TodoListMobileProps> = ({
 			if (Number(params.skip) >= amountOfItems) return;
 
 			if (scrollTop < 50) {
-				setParams({ ...params, skip: '0' });
+				setSearchParams({ ...params, skip: '0' });
 			}
 
 			if (scrollHeight - scrollTop - window.innerHeight < 5) {
-				setParams({
+				setSearchParams({
 					...params,
 					skip: `${Number(params.skip || '0') + itemsPerPage}`,
 					take: `${itemsPerPage}`,
@@ -44,14 +45,18 @@ const TodoListMobile: React.FC<TodoListMobileProps> = ({
 			window.removeEventListener('scroll', handleScroll);
 		};
 	}, [params, amountOfItems]);
-
 	return (
 		<ul className={td_ls_mobile}>
-			{todos.map((todo: ITodos) => (
-				<li key={todo.id}>
-					<TodoCard todo={todo} />
-				</li>
-			))}
+			{todos.length > 0 &&
+				todos.map((todo: ITodos) => (
+					<li key={todo.id}>
+						<TodoCard
+							todo={todo}
+							onTodoUpdate={onTodoUpdate}
+							onTodoDelete={onTodoDelete}
+						/>
+					</li>
+				))}
 		</ul>
 	);
 };

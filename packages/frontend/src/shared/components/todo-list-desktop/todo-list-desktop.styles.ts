@@ -1,38 +1,26 @@
 import { css } from '@emotion/css';
 import { THEME } from '~shared/styles/theme';
 
-export const todo_tb = css`
-	background-color: ${THEME.color.white};
-	display: none;
-
-	@media screen and (min-width: ${THEME.media.desktop}) {
-		display: table;
-	}
+export const ld_item_animate = css`
+	opacity: 0;
 `;
 
-export const border_tb = css`
-	border: 1px solid ${THEME.color.black};
-	border-collapse: collapse;
-
-	& > tr:nth-child(even) {
-		background-color: ${THEME.color.hover_gray};
+export const ld_item = css`
+	width: 100%;
+	backdrop-filter: blur(2px);
+	& > li:not(:first-child) {
+		opacity: 1;
+		animation: goLeftToRight 0.25s linear;
 	}
-
-	& > td {
-		border: 1px solid black;
-		border-collapse: collapse;
-		padding: 0 ${THEME.padding.x2};
-	}
-	& > td:first-child {
-		vertical-align: baseline;
-		text-align: center;
-	}
-	& > th {
-		border: 1px solid ${THEME.color.black};
-		border-collapse: collapse;
-		background-color: ${THEME.color.hover_gray};
-		text-transform: capitalize;
-		font-size: ${THEME.fontSize.big};
+	@keyframes goLeftToRight {
+		0% {
+			opacity: 0;
+			transform: translateY(16px);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 `;
 
@@ -42,15 +30,29 @@ export const paginate_container = css`
 	padding-top: ${THEME.padding.x5};
 	margin-top: auto;
 	& > li {
-		background-color: ${THEME.color.hover_gray};
-		border-radius: ${THEME.borderRadius.medium};
+		background-color: ${THEME.color.button_disabled};
+		border-radius: ${THEME.borderRadius.small};
 		overflow: hidden;
 		font-weight: 500;
+		text-transform: uppercase;
+		transition: all 0.25s linear;
 	}
 
 	& li:not(.selected) {
-		background-color: ${THEME.color.white};
+		background-color: ${THEME.color.button_back};
 		font-weight: 400;
+	}
+	& > li:hover {
+		background-color: ${THEME.color.button_hover};
+		& a {
+			color: ${THEME.color.gray};
+		}
+	}
+	& > li:focus {
+		background-color: ${THEME.color.button_hover};
+		& a {
+			color: ${THEME.color.gray};
+		}
 	}
 
 	& a {
@@ -58,7 +60,7 @@ export const paginate_container = css`
 		justify-content: center;
 		align-items: center;
 		padding: ${THEME.padding.x2} ${THEME.padding.x4};
-		color: ${THEME.color.black};
+		color: ${THEME.color.gray};
 		box-shadow: ${THEME.boxShadow.primary};
 		border-radius: ${THEME.borderRadius.medium};
 		cursor: pointer;

@@ -1,7 +1,21 @@
+@import url('../fonts/Caveat/caveat.css');
+@import url('../fonts/Permanent_Marker/permanent.css');
+@import url('../fonts/Inter/inter.css');
+
 body {
 	margin: 0;
 	overflow-x: hidden;
-	background-color: rgb(220, 245, 241);
+	background-color: #fdfdfd;
+	font-family: "Inter", sans-serif !important;
+	background:
+		radial-gradient(black 3px, transparent 4px),
+		radial-gradient(black 3px, transparent 4px),
+		linear-gradient(#fff 4px, transparent 0),
+		linear-gradient(45deg, transparent 74px, transparent 75px, #a4a4a4 75px, #a4a4a4 76px, transparent 77px, transparent 109px),
+		linear-gradient(-45deg, transparent 75px, transparent 76px, #a4a4a4 76px, #a4a4a4 77px, transparent 78px, transparent 109px),
+		#fff;
+	background-size: 109px 109px, 109px 109px, 100% 6px, 109px 109px, 109px 109px;
+	background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
 }
 
 h1,
@@ -10,26 +24,11 @@ h3,
 h4,
 h5,
 h6 {
+	font-family: "Permanent Marker", cursive;
 	margin: 0;
 }
 
-/* Your Fonts */
 
-@font-face {
-	font-family: Manrope;
-	src: url('../../../../assets/fonts/Manrope-VariableFont_wght.ttf');
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F,
-		U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: Manrope Bold;
-	src: url('../../../../assets/fonts/manrope.bold.otf');
-	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F,
-		U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-	font-display: swap;
-}
 
 * {
 	margin: 0;
@@ -68,12 +67,6 @@ input {
 	overflow: hidden;
 }
 
-/* input[type="range"] {
-	-webkit-appearance: none;
-	appearance: none;
-	background: transparent;
-	width: 100%;
-} */
 
 .ReactVirtualized__List::-webkit-scrollbar {
 	width: 6px;

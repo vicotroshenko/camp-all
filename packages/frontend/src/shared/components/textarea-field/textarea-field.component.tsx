@@ -16,7 +16,11 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
 }) => {
 	return (
 		<Label name={labelName}>
-			<Field name={fieldName} autocomplete="off" initialValue={initialValue}>
+			<Field
+				name={fieldName}
+				autocomplete="off"
+				initialValue={initialValue}
+			>
 				{(props) => (
 					<textarea
 						{...props.input}

@@ -43,14 +43,14 @@
 			"~/*": [
 				"src/*"
 			],
-			"~todo-all/*": [
-				"src/modules/todo-all/*"
+			"~hooks/*": [
+				"src/hooks/*"
 			],
-			"~todo-element/*": [
-				"src/modules/todo-element/*"
+			"~Нова папка/*": [
+				"src/shared/Нова папка/*"
 			],
-			"~validation/*": [
-				"src/shared/validation/*"
+			"~fonts/*": [
+				"src/shared/fonts/*"
 			]
 		}
 	},

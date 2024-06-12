@@ -9,7 +9,7 @@ interface TextFieldProps {
 	fieldName: string;
 	validate?: (value: string) => string;
 	type?: HTMLInputTypeAttribute;
-	initialValue: string;
+	initialValue?: string;
 }
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -32,7 +32,11 @@ const TextField: React.FC<TextFieldProps> = ({
 				>
 					{({ input, meta }) => (
 						<>
-							<input {...input} className={fieldStyle} />
+							<input
+								{...input}
+								className={fieldStyle}
+								placeholder=" "
+							/>
 							{!meta.valid && meta.touched && (
 								<TextLabel error={true}>{meta.error}</TextLabel>
 							)}

@@ -1,12 +1,24 @@
 import React from 'react';
-import { todoTitle } from './todo-title.styles';
+import { loginTitle, todoTitle } from './todo-title.styles';
+import { useUserStore } from '~store/user/user.store';
+import classNames from 'classnames';
 
 interface TodoTitleProps {
 	children: React.ReactNode;
 }
 
 const TodoTitle: React.FC<TodoTitleProps> = ({ children }) => {
-	return <h2 className={todoTitle}>{children}</h2>;
+	const isLogged = useUserStore((state) => state.isLogged);
+	return (
+		<h2
+			className={classNames(
+				{ [todoTitle]: isLogged },
+				{ [loginTitle]: !isLogged },
+			)}
+		>
+			{children}
+		</h2>
+	);
 };
 
 export default TodoTitle;

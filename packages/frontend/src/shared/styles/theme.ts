@@ -19,6 +19,7 @@ export const THEME = Object.freeze({
 		full: '100%',
 		modal: '500px',
 		h32: '32px',
+		h64: '64px',
 		h40: '40px',
 		h200: '200px',
 	},
@@ -62,20 +63,26 @@ export const THEME = Object.freeze({
 		x8: '32px',
 	},
 	borderRadius: {
-		small: '4px',
-		medium: '8px',
+		small: '2px',
+		medium: '4px',
 		big: '12px',
 	},
 	boxShadow: {
 		primary:
 			'inset 0 0 0 1px rgba(17, 20, 24, 0.2), 0 1px 2px rgba(17, 20, 24, 0.1)',
+		secondary:
+			'0 2px 4px 0 rgba(0, 0, 0, 0.13), 0 1px 1px 0 rgba(0, 0, 0, 0.11)',
 	},
 	color: {
 		white: '#ffffff',
 		black: '#000000',
+		gray: '#f6f4ec',
 		hover_gray: 'rgba(0,0,0,0.1)',
-		hover_white: ' rgba(255, 255, 255, 0.7)',
+		hover_white: ' rgba(255, 255, 255, 0.8)',
 		red: '#FF0000',
+		button_back: '#3e3c37',
+		button_hover: '#0e0d0d',
+		button_disabled: '#787878',
 	},
 	fontSize: {
 		small: '12px',
@@ -91,6 +98,11 @@ export const THEME = Object.freeze({
 	letterSpacing: {
 		unset: '0',
 		small: '0.5px',
-		big: '1',
+		big: '1.5px',
+	},
+	fonts: {
+		title_primary: '"Inter", sans-serif',
+		title_secondary: '"Permanent Marker", cursive',
+		text: '"Inter", sans-serif',
 	},
 });

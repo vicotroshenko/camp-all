@@ -1,11 +1,6 @@
-import axios, { AxiosResponse, AxiosRequestConfig, Axios } from 'axios';
-import { ITodos } from './types';
+import axios, { AxiosResponse, Axios } from 'axios';
 import { HTTP_KEYS, STORAGE_KEYS } from '~shared/keys';
-
-interface Headers extends Partial<AxiosRequestConfig> {
-	queryString?: string | undefined;
-	data?: ITodos;
-}
+import { Headers } from './types';
 
 export class HttpService {
 	baseUrl: string;
@@ -76,11 +71,7 @@ export class HttpService {
 		);
 	}
 
-	async put(
-		id: string,
-		config: Headers,
-		withAuth: boolean,
-	): Promise<AxiosResponse> {
+	async put(config: Headers, withAuth: boolean): Promise<AxiosResponse> {
 		if (withAuth) {
 			config.headers = {
 				...config.headers,
@@ -88,17 +79,13 @@ export class HttpService {
 			};
 		}
 		return await this.fetchingService.put(
-			this.getFullApiUrl(`/${id}`),
+			this.getFullApiUrl(`/${config.id}`),
 			config.data,
 			{ headers: config.headers },
 		);
 	}
 
-	async delete(
-		id: string,
-		config: Headers,
-		withAuth: boolean,
-	): Promise<AxiosResponse> {
+	async delete(config: Headers, withAuth: boolean): Promise<AxiosResponse> {
 		if (withAuth) {
 			config.headers = {
 				...config.headers,
@@ -106,7 +93,7 @@ export class HttpService {
 			};
 		}
 		return await this.fetchingService.delete(
-			this.getFullApiUrl(`/${id}`),
+			this.getFullApiUrl(`/${config.id}`),
 			config,
 		);
 	}

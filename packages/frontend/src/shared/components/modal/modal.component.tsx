@@ -1,17 +1,18 @@
 import { createPortal } from 'react-dom';
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { backdrop, modal_hide, modal_show } from './modal.styles';
+import { backdrop, backdrop_hide, modal_show } from './modal.styles';
+import { useModalStore } from '~store/modal/modal.store';
 
 const modalRoot = document.querySelector('#modal-root') as HTMLElement;
 
 interface ModalProps {
-	isOpen: boolean;
 	children: React.ReactNode;
-	toggle: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen = false, children, toggle }) => {
+const Modal: React.FC<ModalProps> = ({ children }) => {
+	const toggle = useModalStore((state) => state.toggle);
+	const isOpen = useModalStore((state) => state.isOpen);
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent): void => {
 			if (event.code === 'Escape') {
@@ -36,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen = false, children, toggle }) => {
 		<div
 			className={classNames(
 				{ [backdrop]: isOpen },
-				{ [modal_hide]: !isOpen },
+				{ [backdrop_hide]: !isOpen },
 			)}
 			onClick={handleBackdropClick}
 		>

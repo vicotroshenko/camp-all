@@ -1,8 +1,6 @@
-const TODO_INITIAL = {
+export const todoInitial = {
 	title: '',
 	description: '',
 	completed: false,
 	private: false,
 };
-
-export default TODO_INITIAL;

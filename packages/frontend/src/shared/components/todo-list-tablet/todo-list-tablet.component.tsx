@@ -4,8 +4,8 @@ import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { SetURLSearchParams } from 'react-router-dom';
-import { ITodos } from '~shared/services/types';
+import useAppSearchParams from '~/hooks/useAppSearchParams.hook';
+import { ITodos, NewUpdateData } from '~shared/services/types';
 import TodoCard from '../todo-card/todo-card.component';
 import {
 	sliderContainer,
@@ -16,21 +16,22 @@ import {
 interface TodoListTabletProps {
 	todos: ITodos[];
 	itemsPerPage: number;
-	params: { [x: string]: string };
-	setParams: SetURLSearchParams;
 	amountOfItems: number;
+	onTodoUpdate: (newData: NewUpdateData, todo?: ITodos) => void;
+	onTodoDelete: (id: string) => void;
 }
 const TodoListTablet: React.FC<TodoListTabletProps> = ({
 	todos,
 	itemsPerPage,
-	params,
-	setParams,
 	amountOfItems,
+	onTodoUpdate,
+	onTodoDelete,
 }) => {
+	const [params, setSearchParams] = useAppSearchParams();
 	const onReachEnd = (): void => {
 		if (!params.skip) return;
 		if (+params.skip + itemsPerPage >= amountOfItems) return;
-		setParams({ ...params, skip: `${+params.skip + itemsPerPage}` });
+		setSearchParams({ ...params, skip: `${+params.skip + itemsPerPage}` });
 	};
 
 	return (
@@ -47,7 +48,11 @@ const TodoListTablet: React.FC<TodoListTabletProps> = ({
 			>
 				{todos.map((todo: ITodos) => (
 					<SwiperSlide tag="li" key={todo.id} className={slider_el}>
-						<TodoCard todo={todo} />
+						<TodoCard
+							todo={todo}
+							onTodoUpdate={onTodoUpdate}
+							onTodoDelete={onTodoDelete}
+						/>
 					</SwiperSlide>
 				))}
 			</Swiper>

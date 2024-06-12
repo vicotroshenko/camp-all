@@ -12,4 +12,5 @@ export const login_form = css`
 export const login_btn = css`
 	display: flex;
 	justify-content: space-between;
+	gap: ${THEME.gap.x2};
 `;

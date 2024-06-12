@@ -18,7 +18,7 @@ export const enum HTTP_KEYS {
 }
 
 export const STORAGE_KEYS = Object.freeze({
-	TODOS: 'AUTH_TODOS',
+	TODOS: 'AUTH_TOKEN',
 });
 
 export const enum RESET_EMAIL {
@@ -40,8 +40,14 @@ export const enum QUERY_PARAM {
 	SEARCH = 'search',
 }
 
-export const enum FETCHING_STATUS {
-	SUCCESS = 'success',
-	LOADING = 'loading',
-	ERROR = 'error',
+export const enum MUTATION_KEYS {
+	CHANGE_PASSWORD = 'change-password',
+	RESET_PASSWORD = 'reset-password',
+	USER_REGISTER = 'user-register',
+	USER_LOGIN = 'user-login',
+	TODOS_ALL = 'todos',
+	TODO_ONE = 'todo-id',
+	TODO_UPDATE = 'todo-put',
+	TODO_CREATE = 'todo-post',
+	TODO_DELETE = 'todo-delete'
 }

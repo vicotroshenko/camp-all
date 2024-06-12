@@ -10,13 +10,10 @@ export const header_sx = css`
 	justify-content: flex-end;
 	width: ${THEME.width.full};
 	height: ${THEME.height.h40};
+	padding: 0 ${THEME.padding.x3};
 	box-shadow: ${THEME.boxShadow.primary};
-	background-color: ${THEME.color.hover_gray};
+	background-color: ${THEME.color.hover_white};
 	z-index: 89;
-
-	@media screen and (min-width: ${THEME.media.tablet}) {
-		position: static;
-	}
 `;
 
 export const header_btn = css`

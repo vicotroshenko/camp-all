@@ -19,16 +19,21 @@ export const btnPrimary = css`
 	font-weight: 500;
 	border-radius: ${THEME.borderRadius.small};
 	letter-spacing: ${THEME.letterSpacing.small};
-	background-color: ${THEME.color.white};
-	box-shadow: ${THEME.boxShadow.primary};
+	background-color: ${THEME.color.button_back};
+	color: ${THEME.color.gray};
+	box-shadow: ${THEME.boxShadow.secondary};
 	transition: all 0.25s linear;
 	cursor: pointer;
 
 	&:hover {
-		background-color: ${THEME.color.hover_gray};
+		background-color: ${THEME.color.button_hover};
 	}
 
 	&:focus {
-		background-color: ${THEME.color.hover_gray};
+		background-color: ${THEME.color.button_hover};
+	}
+	&:disabled {
+		background-color: ${THEME.color.button_disabled};
+		cursor: not-allowed;
 	}
 `;

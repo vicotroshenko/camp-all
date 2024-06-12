@@ -1,68 +1,95 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTodosStore } from '~store/todose.store';
-import { useUserStore } from '~store/user.store';
+import { AxiosResponse } from 'axios';
+import { useUserStore } from '~store/user/user.store';
+import { Icon } from '@blueprintjs/core';
+import { MUTATION_KEYS } from '~shared/keys';
 import Container from '~shared/components/container/container.component';
 import LinkPrimary from '~shared/components/link-primary/link-primary.component';
 import SwitchForm from '~shared/components/switch-form/switch-form.component';
 import TodoDescription from '~shared/components/todo-card-description/todo-card-description.component';
 import TodoTitle from '~shared/components/todo-title/todo-title.component';
-import { el_buttons, element_wrapper } from './todo-elements.styles';
 import ButtonPrimary from '~shared/components/button-primary/button-primary.component';
-import { Icon } from '@blueprintjs/core';
-import { useModalStore } from '~store/modal.store';
+import { useModalStore } from '~store/modal/modal.store';
+import { todoService } from '~shared/services/todo.service';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { MutateParams, NewUpdateData } from '~shared/services/types';
+import AddModal from '~shared/components/add-modal/add-modal.component';
+import {
+	el_buttons,
+	element_wrapper,
+	element_title,
+} from './todo-elements.styles';
 
 const TodoElement = () => {
+	const [disabled, setDisable] = useState<boolean>(false);
 	const params = useParams();
-	const getOneTodo = useTodosStore((state) => state.getOneTodo);
-	const updateTodo = useTodosStore((state) => state.updateTodo);
-	const todo = useTodosStore((state) => state.todo);
 	const toggleModal = useModalStore((state) => state.toggle);
 	const user = useUserStore((state) => state.user);
-	const keyRf = useRef<number>(1);
+
+	const {
+		data: todo,
+		isFetched,
+		refetch,
+	} = useQuery({
+		queryKey: [MUTATION_KEYS.TODO_ONE, params.id],
+		queryFn: () => todoService.getOne(params.id, {}, true),
+		select: ({ data }) => data,
+	});
+
+	const { mutate } = useMutation({
+		mutationKey: [MUTATION_KEYS.TODO_UPDATE],
+		mutationFn: ({ id, data }: MutateParams): Promise<AxiosResponse> =>
+			todoService.put({ id, data }, true),
+		onSuccess: () => refetch(),
+	});
 
 	useEffect(() => {
-		keyRf.current += 1;
-		getOneTodo(params.id);
-	}, [params.id]);
+		if (todo && user.id !== todo.owner) {
+			setDisable(true);
+		}
+	}, [todo]);
 
-	const handleUpdate = (e: React.ChangeEvent<HTMLInputElement>): void => {
-		const { name, checked } = e.target;
-		const newTodo = {
-			title: todo.title,
-			description: todo.description,
-			completed: todo.completed,
-			private: todo.private,
-		};
-		updateTodo(todo.id, { ...newTodo, [name]: checked });
+	const onTodoUpdate = (newData: NewUpdateData): void => {
+		const newTodo = { ...todo };
+		delete newTodo.createdAt;
+		delete newTodo.owner;
+		delete newTodo.id;
+		const data = { ...newTodo, ...newData };
+		mutate({ id: todo.id, data });
 	};
-
-	const disabled = Boolean(todo.owner !== user.id);
 
 	const toggle = (): void => toggleModal(todo);
 
 	return (
 		<Container>
-			<div className={element_wrapper}>
-				<TodoTitle>{todo.title}</TodoTitle>
-				<TodoDescription view="full">
-					{todo.description}
-				</TodoDescription>
-				<SwitchForm
-					view="full"
-					todo={todo}
-					onChange={handleUpdate}
-					key={keyRf.current}
-					disabled={disabled}
-				/>
-				<div className={el_buttons}>
-					<LinkPrimary link="/">back</LinkPrimary>
-					<ButtonPrimary onClick={toggle} disabled={disabled}>
-						<span>Edit</span>
-						<Icon icon="edit" />
-					</ButtonPrimary>
-				</div>
-			</div>
+			<AddModal onTodoUpdate={onTodoUpdate} />
+			{isFetched && (
+				<>
+					<div className={element_wrapper}>
+						<TodoTitle>
+							<span className={element_title}>Title:</span>
+							{todo.title}
+						</TodoTitle>
+						<TodoDescription view="full">
+							{todo.description}
+						</TodoDescription>
+						<SwitchForm
+							view="full"
+							todo={todo}
+							onTodoUpdate={onTodoUpdate}
+							disabled={disabled}
+						/>
+						<div className={el_buttons}>
+							<LinkPrimary link="/">back</LinkPrimary>
+							<ButtonPrimary onClick={toggle} disabled={disabled}>
+								<span>Edit</span>
+								<Icon icon="edit" />
+							</ButtonPrimary>
+						</div>
+					</div>
+				</>
+			)}
 		</Container>
 	);
 };
